@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>🎉 Feliz Cumpleaños </title>
+<style>
+  :root{
+    --bg: #0f1020;
+    --primary: #ff69b4; 
+    --accent: #7cf0ff;  
+    --gold: #ffd166;
+    --white: #ffffff;
+    --card: #171833;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial}
+  body{background: radial-gradient(1200px 700px at 20% 10%, #1a1c3a 20%, var(--bg) 60%, #0b0c1a 100%); color:var(--white); overflow-x:hidden}
+
+  .balloons{position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0}
+  .balloon{
+    position:absolute; bottom:-20vh; width:40px; height:55px;
+    background: radial-gradient(circle at 30% 30%, #fff8, var(--primary));
+    border-radius:50% 50% 45% 45% / 60% 60% 40% 40%;
+    box-shadow:0 8px 20px #0006;
+    animation: rise var(--dur) linear infinite, sway 6s ease-in-out infinite;
+  }
+  .balloon:after{
+    content:""; position:absolute; bottom:-18px; left:50%; transform:translateX(-50%);
+    width:2px; height:28px; background:#fff6;
+  }
+  @keyframes rise{ to { transform:translateY(-120vh) translateX(var(--drift,0)); } }
+  @keyframes sway{ 50% { filter:hue-rotate(30deg); transform: translateX(10px); } }
+
+  header{
+    position:relative; z-index:1; padding:8rem 1.5rem 6rem; text-align:center;
+  }
+  .badge{
+    display:inline-block; padding:.35rem .8rem; border:1px solid #ffffff22;
+    border-radius:999px; background:#ffffff08; font-size:.9rem; letter-spacing:.08em; text-transform:uppercase;
+  }
+  h1{
+    font-size: clamp(2rem, 6vw, 4rem);
+    margin:.8rem auto .4rem; line-height:1.05;
+    background: linear-gradient(90deg, var(--gold), var(--primary), var(--accent));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow: 0 0 20px #fff2;
+  }
+  .type{
+    margin:0 auto 1.2rem; font-size:clamp(1rem,2.8vw,1.25rem); color:#cdd7ff; min-height:1.6em
+  }
+  .cta{
+    display:inline-flex; gap:.6rem; align-items:center;
+    border:none; border-radius:999px; padding:.9rem 1.2rem;
+    background:linear-gradient(135deg,var(--primary),#ff4fa5);
+    color:#fff; font-weight:700; cursor:pointer; box-shadow:0 6px 24px #ff69b455;
+    transition:transform .15s ease, box-shadow .2s ease, filter .2s ease;
+  }
+  .cta:hover{ transform:translateY(-2px); box-shadow:0 10px 28px #ff69b466; filter:saturate(1.1) }
+  .muted{display:block; margin-top:.6rem; color:#b9c0ff; font-size:.9rem}
+
+  .container{max-width:1100px; margin:0 auto; padding:0 1rem; position:relative; z-index:1}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem}
+  .card{
+    background:linear-gradient(180deg,#ffffff07,#ffffff03);
+    border:1px solid #ffffff14; border-radius:22px; padding:1.2rem;
+    backdrop-filter:blur(4px); box-shadow:0 12px 30px #0005;
+  }
+  .card h3{margin:.2rem 0 .4rem; font-size:1.35rem}
+  .card p{color:#dbe2ff; line-height:1.55}
+  .chip{display:inline-block; font-size:.8rem; padding:.25rem .55rem; border-radius:999px; background:#ffffff0f; border:1px solid #ffffff1a; margin:.25rem .25rem 0 0}
+
+  .envelope-wrap{position:relative; text-align:center; margin:4rem auto 2rem}
+  .envelope{
+    margin:0 auto; width:300px; height:200px; position:relative; perspective:1000px; cursor:pointer;
+  }
+  .env-body{
+    position:absolute; inset:0; background:linear-gradient(180deg,#ff77b7,#ff4fa4);
+    border-radius:14px; box-shadow:0 12px 30px #ff4fa54a; overflow:hidden;
+  }
+  .env-flap{
+    position:absolute; top:0; left:0; right:0; height:60%;
+    background:linear-gradient(180deg,#ffa3cf,#ff77b7);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top; transition: transform .8s cubic-bezier(.2,.8,.2,1);
+    box-shadow:0 10px 24px #0004 inset;
+  }
+  .envelope.open .env-flap{ transform: rotateX(180deg); }
+  .letter{
+    position:absolute; left:10%; right:10%; top:15%; height:70%;
+    background:#fff; border-radius:12px; padding:1rem; color:#333;
+    box-shadow:0 10px 18px #0003; transform: translateY(40%); transition:transform .7s ease .3s;
+  }
+  .envelope.open .letter{ transform: translateY(-10%); }
+  .letter h4{margin:.2rem 0 .4rem; color:#ff3f95}
+  .letter p{margin:.4rem 0; color:#444}
+
+  .confetti{position:fixed; inset:0; pointer-events:none; z-index:999}
+  .piece{
+    position:absolute; width:10px; height:16px; opacity:.9; will-change:transform;
+    animation: fall linear forwards;
+  }
+  @keyframes fall{
+    to { transform: translateY(110vh) rotate(720deg); opacity:1; }
+  }
+
+  .gallery{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:.8rem; margin:2rem 0}
+  .gallery img{
+    width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:18px; border:1px solid #ffffff1a;
+    box-shadow:0 8px 20px #0005; transition: transform .2s ease;
+  }
+  .gallery img:hover{ transform: translateY(-4px) }
+
+  footer{margin:3rem 0 2rem; text-align:center; color:#aeb6ff}
+  .small{font-size:.9rem}
+</style>
+</head>
+<body>
+
+<div class="balloons" id="balloons"></div>
+
+<header>
+  <h2 style="font-size:2rem; margin:0; color:#ffd166;">🎂 Celebrando tus 41 años 🎂</h2>
+  <h1>¡Feliz Cumpleaño, papá! 🎉</h1>
+  <p class="type" id="type"></p>
+  <button class="cta" id="btnSorpresa">💌 Abrir Sorpresa</button>
+  <span class="muted">____________________</span>
+</header>
+
+<div class="container">
+  <section class="grid">
+    <article class="card">
+      <h3>🎈 Un día para sonreír</h3>
+      <p>
+ Que nunca te falte salud, alegría y ganas de seguir cumpliendo sueños. ¡Eres mi inspiración!
+      </p>
+      <span class="chip">💖 Cariño</span>
+    </article>
+    <article class="card">
+      <h3>🎂 Un año más de vida</h3>
+      <p>
+        Papá, hoy cumples 41 y me siento orgulloso de tenerte conmigo. Gracias por ser mi ejemplo,
+         mi fuerza y mi motivación. Te deseo lo mejor siempre porque te lo mereces.
+      </p>
+      <span class="chip">🌈 Alegría</span>
+    </article>
+    <article class="card">
+      <h3>🎈 41 razones para sonreír</h3>
+      <p>
+       Cada año que pasa me doy cuenta de lo valioso que eres en mi vida. Que este nuevo capítulo 
+       esté lleno de bendiciones, momentos felices y todo lo que te haga sentir pleno.
+      </p>
+      <span class="chip">✨ Sueños</span>
+    </article>
+  </section>
+
+  <section class="envelope-wrap">
+    <div class="envelope" id="envelope" aria-label="Carta de cumpleaños">
+      <div class="env-body"></div>
+      <div class="env-flap"></div>
+      <div class="letter">
+        <h4>Para: <span id="nombreCarta">Walter</span> 💖</h4>
+        <p>
+          Hoy celebramos tu cumpleaños. Que la vida te sorprenda
+          con nuevos sueños, caminos y abrazos. ¡Feliz cumpleaños!✨
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>📸 Momentos que brillan</h3>
+    <p>🎈Hoy es un día para sonreír, papá. Yo celebro tu vida, todo lo que has logrado y lo que viene para ti.
+       Deseo de corazón que cada sueño que tengas se cumpla, porque para mí eres lo máximo.</p>
+    <div class="gallery">
+      <img src="assets/WhatsApp Image 2025-09-29 at 11.43.06 PM.jpeg" alt="Foto 1">
+      <img src="assets/WhatsApp Image 2025-09-29 at 11.43.30 PM.jpeg" alt="Foto 2">
+    </div>
+  </section>
+</div>
+
+<canvas class="confetti" id="confetti"></canvas>
+
+<footer>
+  <p class="small">📸 Que esta etapa de tu vida esté llena de recuerdos inolvidables, 
+    nuevas metas cumplidas y muchas alegrías por venir. </p>
+</footer>
+
+<script>
+document.getElementById('nombreCarta').textContent = NOMBRE;
+
+const frases = [
+  "Que tus deseos se vuelvan aventuras ✨",
+  "Hoy, tu sonrisa es la protagonista 😄",
+  "¡A celebrar la vida contigo! 🎊"
+];
+const typeEl = document.getElementById('type');
+let fi = 0, ci = 0, borrando = false;
+function typeLoop(){
+  const f = frases[fi];
+  typeEl.textContent = f.slice(0, ci) + (ci % 2 ? "▋" : "▍");
+  if(!borrando && ci < f.length){ ci++; }
+  else if(!borrando && ci === f.length){ borrando = true; setTimeout(typeLoop, 1200); return; }
+  else if(borrando && ci > 0){ ci--; }
+  else { borrando = false; fi = (fi+1) % frases.length; }
+  setTimeout(typeLoop, borrando ? 30 : 60);
+}
+typeLoop();
+
+const balloonColors = ["#ff69b4","#7cf0ff","#ffd166","#a78bfa","#4ade80","#f472b6","#60a5fa"];
+const balloons = document.getElementById('balloons');
+function spawnBalloon(){
+  const b = document.createElement('div');
+  b.className = 'balloon';
+  const size = 30 + Math.random()*40;
+  b.style.width = size + "px";
+  b.style.height = (size*1.35) + "px";
+  b.style.left = (Math.random()*100) + "vw";
+  b.style.setProperty('--dur', (10 + Math.random()*12) + 's');
+  b.style.setProperty('--drift', (Math.random()*60-30) + 'px');
+  b.style.background = `radial-gradient(circle at 30% 30%, #fff8, ${balloonColors[Math.floor(Math.random()*balloonColors.length)]})`;
+  balloons.appendChild(b);
+  setTimeout(()=> b.remove(), 23000);
+}
+setInterval(spawnBalloon, 800);
+for(let i=0;i<10;i++) setTimeout(spawnBalloon, i*300);
+
+const envelope = document.getElementById('envelope');
+const btnSorpresa = document.getElementById('btnSorpresa');
+let opened = false;
+
+btnSorpresa.addEventListener('click', ()=>{
+  openSurprise();
+  smoothScrollTo(envelope, 600);
+});
+envelope.addEventListener('click', openSurprise);
+
+function openSurprise(){
+  if(opened) return;
+  opened = true;
+  envelope.classList.add('open');
+  confettiBurst();
+}
+
+const confettiCanvas = document.getElementById('confetti');
+const ctx = confettiCanvas.getContext('2d');
+function resizeCanvas(){
+  confettiCanvas.width = innerWidth; confettiCanvas.height = innerHeight;
+}
+addEventListener('resize', resizeCanvas); resizeCanvas();
+
+let confettiPieces = [];
+function confettiBurst(){
+  const colors = ['#ff69b4','#ffd166','#7cf0ff','#a78bfa','#4ade80','#f472b6','#60a5fa','#ffffff'];
+  for(let i=0;i<220;i++){
+    confettiPieces.push({
+      x: innerWidth/2 + (Math.random()-0.5)*120,
+      y: innerHeight/3,
+      vx: (Math.random()-0.5)*6,
+      vy: -(Math.random()*8+4),
+      g: 0.2 + Math.random()*0.2,
+      s: 6 + Math.random()*6,
+      c: colors[Math.floor(Math.random()*colors.length)],
+      r: Math.random()*360
+    });
+  }
+}
+function confettiLoop(){
+  ctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+  for(const p of confettiPieces){
+    p.vy += p.g; p.x += p.vx; p.y += p.vy; p.r += 6;
+    ctx.save();
+    ctx.translate(p.x,p.y); ctx.rotate(p.r*Math.PI/180);
+    ctx.fillStyle = p.c;
+    ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*1.3);
+    ctx.restore();
+  }
+  confettiPieces = confettiPieces.filter(p=> p.y < innerHeight+40);
+  requestAnimationFrame(confettiLoop);
+}
+confettiLoop();
+
+function smoothScrollTo(el, dur=600){
+  const top = el.getBoundingClientRect().top + window.scrollY - 40;
+  const start = window.scrollY;
+  const t0 = performance.now();
+  function step(ts){
+    const p = Math.min(1,(ts - t0)/dur);
+    const ease = p<.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2,3)/2;
+    window.scrollTo(0, start + (top-start)*ease);
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+</script>
+</body>
+</html>
